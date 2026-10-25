@@ -1,0 +1,5 @@
+venv/
+__pycache__/
+debug_yandex_archive/
+*.xlsx
+list_links.html
