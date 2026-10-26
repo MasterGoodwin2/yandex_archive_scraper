@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Яндекс Архив — сбор людей округи</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font: 15px/1.5 -apple-system, "Segoe UI", Roboto, sans-serif; max-width: 860px; margin: 24px auto; padding: 0 16px; }
+    h1 { font-size: 20px; margin: 0 0 4px; }
+    .muted { color: #777; font-size: 13px; }
+    fieldset { border: 1px solid #8884; border-radius: 8px; margin: 16px 0; padding: 12px 16px; }
+    legend { padding: 0 6px; font-weight: 600; }
+    label { display: block; margin: 6px 0; }
+    label.mode { padding: 8px 10px; border: 1px solid #8884; border-radius: 8px; }
+    label.mode input { margin-right: 8px; }
+    label.mode .muted { display: block; margin: 2px 0 0 24px; }
+    button { font: inherit; padding: 7px 16px; border-radius: 6px; border: 1px solid #8886; cursor: pointer; background: #8881; }
+    button.primary { background: #2563eb; color: #fff; border-color: #2563eb; }
+    button:disabled { opacity: .45; cursor: default; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    code { font: 12.5px ui-monospace, Menlo, monospace; word-break: break-all; }
+    #banner { display: none; border: 1px solid #d97706; background: #f59e0b22; border-radius: 8px; padding: 12px 16px; margin: 12px 0; }
+    #status { font-weight: 600; margin: 12px 0 4px; }
+    #log { white-space: pre-wrap; font: 12.5px/1.45 ui-monospace, Menlo, monospace; border: 1px solid #8884; border-radius: 8px; padding: 10px; height: 300px; overflow: auto; }
+  </style>
+</head>
+<body>
+  <h1>Яндекс Архив — сбор людей округи</h1>
+  <div class="muted">Перед запуском войдите в Яндекс в этом же Chrome (откройте ya.ru/archive). Эту вкладку не закрывайте, пока идёт работа.</div>
+
+  <fieldset>
+    <legend>1. Тип обработки данных</legend>
+    <label class="mode"><input type="radio" name="mode" value="confession" checked>
+      <b>Исповедные ведомости</b><span class="muted" id="descConfession"></span></label>
+    <label class="mode"><input type="radio" name="mode" value="revision">
+      <b>Ревизские сказки</b><span class="muted" id="descRevision"></span></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>2. Список ссылок</legend>
+    <input type="file" id="linksFile" accept=".html,.htm,text/html">
+    <div class="muted" id="linksInfo">Файл list_links.html не выбран</div>
+  </fieldset>
+
+  <fieldset>
+    <legend>3. Откуда брать данные на странице</legend>
+    <div class="muted">
+      Текст берётся только из окна расшифрованного (распознанного) текста — справа от окна со сканом.
+      Дата документа — строка выше панели инструментов окна со сканом. По умолчанию окна определяются автоматически;
+      если определились неверно, укажите их вручную: расширение откроет первую страницу из вашего списка,
+      вы наведёте мышь на нужное место и кликните.
+    </div>
+    <div style="margin-top:8px">Окно текста: <code id="textSelInfo">автоопределение</code></div>
+    <div>Строка даты: <code id="dateSelInfo">автоопределение</code></div>
+    <div class="row">
+      <button id="pickTextBtn">Указать окно текста вручную</button>
+      <button id="pickDateBtn">Указать строку даты вручную</button>
+      <button id="resetSelBtn">Сбросить на автоопределение</button>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>4. Настройки</legend>
+    <label><input type="checkbox" id="showTab"> Показывать рабочую вкладку (если страницы не успевают прогружаться в фоне)</label>
+    <label><input type="checkbox" id="debugHtml" checked> Сохранить отладочный HTML первой страницы (first_page.html) — пригодится, если текст не распознаётся</label>
+  </fieldset>
+
+  <div class="row">
+    <button id="startBtn" class="primary">Выбрать, куда сохранить Excel, и начать</button>
+    <button id="saveBtn" disabled>Сохранить сейчас</button>
+    <button id="stopBtn" disabled>Остановить и сохранить</button>
+  </div>
+
+  <div id="banner">
+    <div id="bannerText"></div>
+    <div class="row"><button id="continueBtn">Продолжить</button></div>
+  </div>
+
+  <div id="status">Готов к запуску.</div>
+  <div id="log"></div>
+
+  <script src="xlsx-writer.js"></script>
+  <script src="names.js"></script>
+  <script src="parser.js"></script>
+  <script src="logic.js"></script>
+  <script src="page-scripts.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
